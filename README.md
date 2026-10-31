@@ -37,15 +37,18 @@ Each branch is an open pull request to the original repo:
 
 | Branch | Changes |
 |---|---|
-| `windows-build` | Native Windows x64 build, cross-compiled from Linux. Fixes a crash on starting the game with Direct3D 12. Left/right mouse buttons shoot and aim. App icon. Mouse sensitivity defaults to 50%, so mouselook works straight away. |
-| `cutscene-pillarbox` | Mission cutscenes run at 25 fps, so voice lines no longer overlap (e.g. "Good luck, Jim" playing over the end of the briefing). The title screen's introduction runs at 30 fps. In widescreen, black 4:3 side bars hide unmodelled parts of the sets in cutscenes, on the IMF handheld screens and around the sniper scope. New **Graphics > Cutscene Framing** setting: **Fill** (default) stretches cutscenes to fill the screen while keeping their original framing, and **4:3** keeps the bars. |
+| `windows-build` | Native Windows x64 build, cross-compiled from Linux. Fixes a crash on starting the game with Direct3D 12. Left/right mouse buttons shoot and aim. App icon. Mouse sensitivity defaults to 50%, so mouselook works straight away. Fixes a crash when destroying a sea mine on Gunboat. |
+| `cutscene-pillarbox` | Mission cutscenes run at 25 fps, so voice lines no longer overlap (e.g. "Good luck, Jim" playing over the end of the briefing). The title screen's introduction runs at 30 fps. In widescreen, black 4:3 side bars hide unmodelled parts of the sets in cutscenes, on the IMF handheld screens and around the sniper scope. New **Graphics > Cutscene Framing** setting: **Fill** (default) stretches cutscenes to fill the screen while keeping their original framing, and **4:3** keeps the bars. Screen fades and full-screen pictures (e.g. "THE END") cover the whole screen instead of showing the level beside them. |
 | `devtools-fixes` | **Debug > Unlock All Levels** unlocks every level. **Debug > Start in Level** options wrap instead of overlapping. |
+
+`main` (this page) also adds the fork's credits to the end of the game's credits roll. That change isn't part of a pull
+request.
 
 ### Windows download
 
 Get **MIRecompiled-win64.zip** from the
 [windows-test-1 pre-release](https://github.com/tijayfly/mi_n64_exe/releases/tag/windows-test-1). It's built from all
-three branches. Unzip it, run `MIRecompiled.exe` and pick your ROM. If Windows reports a missing `MSVCP140.dll`, install
+three branches plus `main`. Unzip it, run `MIRecompiled.exe` and pick your ROM. If Windows reports a missing `MSVCP140.dll`, install
 the [Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe). Tested on Windows 11 with
 Direct3D 12.
 
