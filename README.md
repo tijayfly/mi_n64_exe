@@ -1,3 +1,9 @@
+> [!NOTE]
+> **This is a fork** of [nickallevato/mi_n64_exe](https://github.com/nickallevato/mi_n64_exe) with a native Windows
+> build, bug fixes and quality-of-life enhancements: see [Fork notes](#fork-notes). The changes have been submitted
+> upstream as [pull requests](https://github.com/nickallevato/mi_n64_exe/pulls?q=is%3Apr+author%3Atijayfly) and are
+> awaiting approval.
+
 <div align="center">
 
 # Mission: Impossible — PC Recomp
@@ -24,6 +30,31 @@ The app is built like [BanjoRecomp](https://github.com/BanjoRecomp/BanjoRecomp),
 
 > **You need your own ROM.** No ROM or game data is in this repository, only screenshots. Use a dump of *Mission Impossible (USA)*,
 > sha1 `7546d5df1fc93fed8205a066f1333fd7dd50c1e1`.
+
+## Fork notes
+
+Each branch is an open pull request to the original repo:
+
+| Branch | Changes |
+|---|---|
+| `windows-build` | Native Windows x64 build, cross-compiled from Linux. Fixes a crash on starting the game with Direct3D 12. Left/right mouse buttons shoot and aim. App icon. Mouse sensitivity defaults to 50%, so mouselook works straight away. |
+| `cutscene-pillarbox` | Mission cutscenes run at 25 fps, so voice lines no longer overlap (e.g. "Good luck, Jim" playing over the end of the briefing). The title screen's introduction runs at 30 fps. In widescreen, black 4:3 side bars hide unmodelled parts of the sets in cutscenes, on the IMF handheld screens and around the sniper scope. New **Graphics > Cutscene Framing** setting: **Fill** (default) stretches cutscenes to fill the screen while keeping their original framing, and **4:3** keeps the bars. |
+| `devtools-fixes` | **Debug > Unlock All Levels** unlocks every level. **Debug > Start in Level** options wrap instead of overlapping. |
+
+### Windows download
+
+Get **MIRecompiled-win64.zip** from the
+[windows-test-1 pre-release](https://github.com/tijayfly/mi_n64_exe/releases/tag/windows-test-1). It's built from all
+three branches. Unzip it, run `MIRecompiled.exe` and pick your ROM. If Windows reports a missing `MSVCP140.dll`, install
+the [Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe). Tested on Windows 11 with
+Direct3D 12.
+
+### Building for Windows
+
+The Windows build is cross-compiled on Linux with clang-cl. To build it, check out `windows-build`, then merge
+`cutscene-pillarbox` and `devtools-fixes` if you want their changes too (if `CMakeLists.txt` conflicts, keep both
+sides). Follow [docs/WINDOWS_CROSS.md](https://github.com/tijayfly/mi_n64_exe/blob/windows-build/docs/WINDOWS_CROSS.md),
+after step 1 of [Building](#building).
 
 ## Features
 
