@@ -72,3 +72,56 @@ extern "C" void mi_override_entry(uint8_t* rdram, uint32_t entry, uint32_t buffe
     }
     std::fprintf(stderr, "Override applied: rom_%08X.bin -> 0x%08X (%u bytes)\n", rom_address, buffer, size);
 }
+
+// Fork credits: two entries added at the end of the game's credits. The credits text is entry 4 of the text archive
+// (handle D_80093AB0); a line ending in ':' is drawn grey and the others white, and entries are separated by two blank
+// lines. Credits_LoadText allocates the entry's decoded size and the credits screen counts lines over it, so grow the
+// size in the archive's entry table before the load, then write the extra lines after the original text.
+namespace {
+    constexpr uint32_t text_archive_handle_addr = 0x80093AB0;
+    constexpr uint32_t credits_entry_index = 4;
+    constexpr uint32_t credits_rom_address = 0x30FDD0;
+    constexpr uint32_t credits_size = 0x894;
+    constexpr char fork_credits[] =
+        "\r\n"
+        "Windows port by :\r\n"
+        "TiJayFLY\r\n"
+        "\r\n\r\n"
+        "Based on a Linux port by :\r\n"
+        "nickallevato\r\n"
+        "\r\n";
+    constexpr uint32_t fork_credits_size = sizeof(fork_credits) - 1;
+    bool credits_grown = false;
+
+    uint32_t credits_entry(uint8_t* rdram) {
+        uint32_t handle = ram_u32(rdram, text_archive_handle_addr);
+        if (handle < 0x80000000u || ram_u32(rdram, handle + 0x0) <= credits_entry_index) {
+            return 0;
+        }
+        uint32_t entry = ram_u32(rdram, handle + 0x4) + credits_entry_index * 0x14;
+        return ram_u32(rdram, entry + 0xC) == credits_rom_address ? entry : 0;
+    }
+}
+
+extern "C" void mi_credits_before_load(uint8_t* rdram) {
+    credits_grown = false;
+    uint32_t entry = credits_entry(rdram);
+    if (entry == 0) {
+        return;
+    }
+    uint32_t& size = *reinterpret_cast<uint32_t*>(rdram + (entry - 0x80000000u));
+    if (size == credits_size) {
+        size = credits_size + fork_credits_size;
+    }
+    credits_grown = size == credits_size + fork_credits_size;
+}
+
+extern "C" void mi_credits_after_load(uint8_t* rdram, uint32_t buffer) {
+    if (!credits_grown || buffer < 0x80000000u) {
+        return;
+    }
+    uint32_t offset = buffer - 0x80000000u + credits_size;
+    for (uint32_t i = 0; i < fork_credits_size; i++) {
+        rdram[(offset + i) ^ 3] = static_cast<uint8_t>(fork_credits[i]);
+    }
+}

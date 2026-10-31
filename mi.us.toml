@@ -29,6 +29,18 @@ func = "Burp_Load"
 before_vram = 0x80068E64
 text = "{ void mi_override_entry(uint8_t*, uint32_t, uint32_t); if (ctx->r2 != 0 && ctx->r18 != 0) mi_override_entry(rdram, (uint32_t)ctx->r18, (uint32_t)ctx->r19); }"
 
+# Fork credits (src/game/overrides.cpp): Credits_LoadText loads the credits text (text archive entry 4). Make the
+# entry larger before it's loaded, then add the fork's lines at the end.
+[[patches.hook]]
+func = "Credits_LoadText"
+before_vram = 0x800287E0
+text = "{ void mi_credits_before_load(uint8_t*); mi_credits_before_load(rdram); }"
+
+[[patches.hook]]
+func = "Credits_LoadText"
+before_vram = 0x800287F8
+text = "{ void mi_credits_after_load(uint8_t*, uint32_t); mi_credits_after_load(rdram, (uint32_t)ctx->r2); }"
+
 # Debug level warp (src/game/level_warp.cpp): MI_LEVEL=<mission>,<stage> boots straight into a stage. Game_ThreadMain
 # calls it after boot init, before the front end loop; it sets up the menus' state and calls Game_RunMission.
 [[patches.hook]]

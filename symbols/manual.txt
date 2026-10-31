@@ -108,6 +108,9 @@ Burp_ReadRaw = 0x80068B58;
 Burp_LoadTo = 0x80068BB4;
 // Burp_Load(h, i): Heap_Alloc(decoded size) and decode entry i into it; returns the buffer (0 on failure).
 Burp_Load = 0x80068CF0;
+// Credits_LoadText: Burp_Load of the credits text (text archive D_80093AB0, entry 4; CRLF lines, a line ending in ':'
+// is drawn grey, others white). The credits screen counts its lines over the entry's decoded size.
+Credits_LoadText = 0x800287E0;
 // By-name variants of Burp_ReadRaw / Burp_LoadTo / Burp_Load (no direct callers).
 Burp_ReadRawByName = 0x80068E98;
 Burp_LoadToByName = 0x80068FA0;
