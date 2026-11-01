@@ -54,7 +54,7 @@ Direct3D 12.
 ### Building for Windows
 
 The Windows build is cross-compiled on Linux with clang-cl. To build it, check out `windows-build`, then merge
-`cutscene-pillarbox` and `devtools-fixes` if you want their changes too (if `CMakeLists.txt` conflicts, keep both
+`cutscene-pillarbox`, `devtools-fixes` and `terminal-room-assist` if you want their changes too (if `CMakeLists.txt` conflicts, keep both
 sides). Follow [docs/WINDOWS_CROSS.md](https://github.com/tijayfly/mi_n64_exe/blob/windows-build/docs/WINDOWS_CROSS.md),
 after step 1 of [Building](#building).
 
