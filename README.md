@@ -249,7 +249,7 @@ N64ModernRuntime can provide its own implementations.
 
 </details>
 
-## Yes, AI wrote this
+## AI Disclosure and Notes
 
 **A note from TiJayFLY:** A huge thank you to **nickallevato** for the original Linux port. Mission: Impossible was
 under my tree on Christmas morning 1998, and seeing it run natively on PC after all these years is something I never
