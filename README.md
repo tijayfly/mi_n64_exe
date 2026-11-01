@@ -13,9 +13,7 @@
 
 [Screenshots](#screenshots) · [Download](#download) · [Controls](#controls) · [Settings](#settings) · [Build](#building) · [Roadmap](docs/ROADMAP.md) · [How it works](#how-it-works)
 
-<a href="https://cdn.jsdelivr.net/gh/nickallevato/mi_n64_exe@main/docs/media/highlights.mp4"><img src="docs/media/gameplay.gif" alt="Ethan running on the train roof and through the embassy at 60 FPS" width="720"></a>
-
-▶ [Watch the 24-second highlight reel (1080p60)](https://cdn.jsdelivr.net/gh/nickallevato/mi_n64_exe@main/docs/media/highlights.mp4)
+▶ [Watch PC Port Gameplay Highlights](https://youtu.be/8_9ST7XxMoE)
 
 </div>
 
