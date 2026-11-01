@@ -128,6 +128,8 @@ Vulkan. Pick your ROM in the launcher on first start.
 
 Linux, with clang. The ROM goes in `rom/`, which git ignores.
 
+**Windows:** see [Fork notes](#fork-notes) for building this fork's Windows version.
+
 ```sh
 git clone --recurse-submodules https://github.com/nickallevato/mi_n64_exe.git && cd mi_n64_exe
 mkdir -p rom && cp "<path>/Mission Impossible (USA).z64" rom/
