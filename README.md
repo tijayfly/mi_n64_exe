@@ -66,7 +66,7 @@ after step 1 of [Building](#building).
 | 🕹️ **Analog camera** | The right stick turns Ethan and the camera, like a modern third-person game. |
 | ⚡ **60 FPS** | The game's logic runs on the video clock, so the game runs at the same speed as on an N64, just smoother. |
 | 🖥️ **High resolution & widescreen** | Renders at your window's resolution with MSAA, widescreen expansion and a HUD that stays in place. |
-| 🐧 **Native Linux** | Native Wayland, starts in under a second, keeps running when the window is hidden. |
+| 🐧 **Native Linux & Windows** | Linux: native Wayland, starts in under a second, keeps running when the window is hidden. Windows *(this fork)*: native x64 build with Direct3D 12 or Vulkan; see [Fork notes](#fork-notes). |
 | 🎮 **All 20 levels** | Every level loads and plays at 60 FPS. |
 
 ## Screenshots
