@@ -5,6 +5,8 @@ The app layer follows [BanjoRecomp](https://github.com/BanjoRecomp/BanjoRecomp),
 [RecompFrontend](https://github.com/N64Recomp/RecompFrontend) for the launcher, menus, input and mod UI.
 Zelda's own frontend predates RecompFrontend and is mostly game-specific.
 
+Items marked *(fork: branch)* are in this fork's branches, submitted upstream as pull requests and awaiting review.
+
 ## Phase 1: Boot and basics
 - [x] Recompile all main-segment CPU code (1697 functions)
 - [x] Identify the RSP microcodes: graphics F3DEX.NoN 1.21 (RT64 HLE), audio n_aspMain (RSPRecomp)
@@ -18,12 +20,16 @@ Zelda's own frontend predates RecompFrontend and is mostly game-specific.
 - [x] Reach gameplay in the first mission (Ice Hit); movement works
 - [x] All 20 levels load and run (scripts/level_test.sh: unlock, navigate, 20 s random play): 59-61 FPS, no
       crashes or stalls; Waterloo Station's full intro cutscene and sniper section play correctly
-- [ ] Full playthroughs of each mission (objectives, scripted events, endings)
+- [ ] Full playthroughs of each mission (objectives, scripted events, endings). Played through to the final ending
+      on the Windows build *(fork)*
 - [x] Audio crash (std::bad_alloc in queue_samples, hit in 2 of 5 level captures): the audio manager's minimum frame
       size check is unsigned, so a negative size became a ~4 GB osAiSetNextBuffer length. Clamped with a signed compare.
 - [x] Music plays through the intro, menus and levels (confirmed by playtest; spectrograms of menu and level audio)
 - [x] Clean shutdown: quitting crashed 4/5 times (game threads ran on after game memory was unmapped); now 0/11 across
       intro, title and in-level quits
+- [x] Crash when destroying a sea mine on Gunboat: an object's collision bounds pointer (obj+0x4) is invalid once it's
+      destroyed, and moving it read through it (Collision_UpdateBounds and its six callers). The update is skipped
+      and the attached object reads as none *(fork: windows-build)*
 - [ ] Name the game's main subsystems (scheduler, main loop, input, audio, renderer) in `symbols/manual.txt`
 - [ ] Rumble Pak / Controller Pak support
 - [ ] Remove waits on RCP hardware that the runtime doesn't need (as Zelda's `[[patches.instruction]]` do)
@@ -33,12 +39,26 @@ Zelda's own frontend predates RecompFrontend and is mostly game-specific.
       speed is unchanged (verified by comparing 30/60 FPS runs). Graphics > Frame Rate, default 60.
 - [x] Upgraded graphics: RT64 renders at window resolution with MSAA and widescreen "Expand" by default
       (compared against native 240p 4:3 at the same moment). HUD stays 16:9-clamped.
+- [x] Widescreen: scripted scenes (Game_LevelLoop mode 0, e.g. mission intros) keep their 4:3 framing with black side
+      bars, so the unmodelled parts of the sets outside the original frame stay hidden; the IMF handheld's bezel gets the
+      same bars wherever it is drawn. Gameplay keeps the expanded view. Graphics > Cutscene Framing "Fill" (default)
+      instead narrows the scene camera's vertical field of view so the expanded view keeps the original horizontal
+      framing (top and bottom trimmed); handheld scenes and the title intro stay 4:3. The sniper scope gets the same
+      bars, both when the player aims and in scripted shots. Screen fades cover the whole screen, and full-screen
+      pictures (e.g. "THE END") get black side bars instead of the level's fog color *(fork: cutscene-pillarbox)*
+- [x] Mission scenes run at 25 fps whatever the frame rate setting, so "Good luck, Jim" no longer starts before
+      Phelps' briefing finishes; the title screen's team introduction runs at 30 fps *(fork: cutscene-pillarbox)*
+- [ ] Cutscenes at 60 fps with correct timing: the scripts' waits are mostly real time, but some parts count frames
+      (e.g. ~55 frames before the Ice Hit intro's script threads start), so voices drift early at 60. Releasing the
+      waits on a 25 fps grid alone didn't fix it *(fork, investigated)*
 - [ ] Ultrawide polish (culling at extreme aspect ratios not checked)
 - [x] Analog camera: right stick turns Ethan (and the camera behind him) at a configurable rate and tilts the
       first-person view; right stick removed from the C-button defaults. General > Analog Camera (default on)
 - [x] Keyboard + mouse: WASD move, mouse turns Ethan directly (writes his yaw), right mouse = R (first-person view,
       mouse moves the crosshair), left mouse = Z (shoot), Space = A, Shift = B, Ctrl = crouch. Cursor is captured in
-      game; General > Mouse Sensitivity (default 50%).
+      game; General > Mouse Sensitivity (default 50%). RecompFrontend never read mouse buttons, so the left/right
+      mouse bindings did nothing until a patch added them, and a first launch saved 0% sensitivity before the default
+      applied; it now starts at 50% *(fork: windows-build)*
 - [x] Visual controls map (docs/controls.svg, in the README); camera mode moved to V (E was on both L and R)
 - [x] Mouse/right stick in sniper mode (Waterloo Station, Mainland): added as stick deflection in
       Camera_SniperControl, verified panning in all directions in Waterloo Station
@@ -57,7 +77,13 @@ Zelda's own frontend predates RecompFrontend and is mostly game-specific.
       startup, ~22% CPU, 3-minute random-input soak without issues, identical audio at 30/60 FPS
 - [x] Linux release: AppImage and .tar.gz built in an Ubuntu 22.04 container (glibc 2.35, static libstdc++)
       by scripts/release/build_linux.sh; v0.1.0
-- [ ] Windows build, Flatpak
+- [x] Windows build: x64, cross-compiled from Linux with clang-cl and xwin (docs/WINDOWS_CROSS.md), Direct3D 12 or
+      Vulkan, app icon; tested on Windows 11. D3D12 shaders come from the Windows DXC (under Wine) so they link with the
+      bundled dxcompiler.dll *(fork: windows-build)*
+- [ ] Flatpak
+- [x] Frustration-free Terminal Room: General > Frustration-free Terminal Room (off by default) starts the card reader
+      and the computer as soon as Ethan calls out the right height, instead of needing him lined up to face them inside
+      a small trigger box *(fork: terminal-room-assist)*
 
 ## Phase 4: Mods
 - [x] Level groundwork: level table, Burp archives (raw DEFLATE), load sequence and geometry format decoded;
@@ -66,8 +92,12 @@ Zelda's own frontend predates RecompFrontend and is mostly game-specific.
       edits verified in game (recoloured and taller Embassy)
 - [ ] Level geometry encoder (edited mesh -> cells, k-d trees, display lists) and different-size overrides
 - [ ] Collision, prop (.DOF) models and the SOOL level script format
+  - [x] SOOL basics: header and function table, stack bytecode (push/load/store, jumps, comparisons, set-state ops),
+        core and game command tables; used to read the Terminal Room's card reader, computer and height callouts
+        *(fork: terminal-room-assist)*
 - [x] Developer tools: General > Developer Tools shows a Debug tab (Start in Level, Unlock All Levels, Load Data
-      Overrides); MI_LEVEL and MI_OVERRIDE_DIR do the same from the command line
+      Overrides); MI_LEVEL and MI_OVERRIDE_DIR do the same from the command line. Unlock All Levels unlocks every
+      level, and the Start in Level list wraps instead of overlapping *(fork: devtools-fixes)*
 - [x] Patches pipeline: decompiled C in `decomp/` compiled for MIPS (clang) and recompiled by N64Recomp in patch mode
       (`decomp.toml`, like Banjo's PatchesLib); developer builds only (`-DMI_DECOMP=ON`). See docs/DECOMP.md.
 - [ ] Export the symbol file for mod authors (`RecompModTool`, a `.nrm` template)
