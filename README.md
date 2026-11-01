@@ -122,6 +122,8 @@ Get the latest Linux build from [Releases](https://github.com/nickallevato/mi_n6
 (one file, `chmod +x` and run) or the **.tar.gz**. Built on Ubuntu 22.04, so it runs on most current distros; needs
 Vulkan. Pick your ROM in the launcher on first start.
 
+**Windows:** see [Fork notes](#fork-notes) for this fork's Windows download.
+
 ## Building
 
 Linux, with clang. The ROM goes in `rom/`, which git ignores.
