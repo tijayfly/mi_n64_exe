@@ -256,7 +256,7 @@ under my tree on Christmas morning 1998, and seeing it run natively on PC after 
 expected. This fork adds a Windows build and a few fixes and quality-of-life changes on top of that work, also made
 with Claude, and all of it has been offered back upstream as pull requests.
 
-### Original repo AI notes
+### Original repo notes
 
 Claude did the reverse engineering, the runtime fixes, the mouse aim and this README. A human aimed it at the game
 and played it. It's all in the commit history. No apologies.
