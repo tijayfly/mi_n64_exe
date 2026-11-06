@@ -1,8 +1,7 @@
 > [!NOTE]
 > **This is a fork** of [nickallevato/mi_n64_exe](https://github.com/nickallevato/mi_n64_exe) with a native Windows
 > build, bug fixes and quality-of-life enhancements: see [Fork notes](#fork-notes). The changes have been submitted
-> upstream as [pull requests](https://github.com/nickallevato/mi_n64_exe/pulls?q=is%3Apr+author%3Atijayfly) and are
-> awaiting approval.
+> upstream as [pull requests](https://github.com/nickallevato/mi_n64_exe/pulls?q=is%3Apr+author%3Atijayfly).
 
 <div align="center">
 
