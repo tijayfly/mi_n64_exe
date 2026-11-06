@@ -46,7 +46,7 @@ request.
 ### Windows download
 
 Get **MIRecompiled-win64.zip** from the
-[windows-test-1 pre-release](https://github.com/tijayfly/mi_n64_exe/releases/tag/windows-test-1). It's built from all
+[Windows EXE Download release](https://github.com/tijayfly/mi_n64_exe/releases/latest). It's built from all
 four branches plus `main`. Unzip it, run `MIRecompiled.exe` and pick your ROM. If Windows reports a missing `MSVCP140.dll`, install
 the [Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe). Tested on Windows 11 with
 Direct3D 12.
